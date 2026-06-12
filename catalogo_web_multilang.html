@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orchestrator ISA - Servicios Digitales</title>
+    <style>
+        :root {
+            --primary: #0f0f23;
+            --accent: #00c853;
+            --accent-light: #00e676;
+            --bg: #0a0a1a;
+            --card: #12122a;
+            --text: #e0e0e0;
+            --text-muted: #888;
+            --border: #1e1e3f;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background: var(--bg); color: var(--text); line-height: 1.6; }
+
+        /* Header */
+        .header { 
+            background: linear-gradient(135deg, var(--primary) 0%, #1a1a3e 100%);
+            padding: 40px 20px; 
+            text-align: center; 
+            border-bottom: 3px solid var(--accent);
+        }
+        .header h1 { font-size: 2.5rem; color: var(--accent); margin-bottom: 10px; }
+        .header p { color: var(--text-muted); font-size: 1.1rem; }
+
+        /* Language Selector */
+        .lang-selector { 
+            display: flex; 
+            justify-content: center; 
+            gap: 10px; 
+            padding: 20px; 
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+        }
+        .lang-btn { 
+            padding: 10px 20px; 
+            border: 2px solid var(--accent); 
+            background: transparent; 
+            color: var(--accent); 
+            border-radius: 25px; 
+            cursor: pointer; 
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .lang-btn:hover, .lang-btn.active { 
+            background: var(--accent); 
+            color: var(--primary); 
+        }
+
+        /* Content */
+        .content { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        .lang-section { display: none; }
+        .lang-section.active { display: block; }
+
+        /* Cards */
+        .packs-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 25px; 
+            margin: 40px 0; 
+        }
+        .pack-card { 
+            background: var(--card); 
+            border-radius: 15px; 
+            padding: 30px; 
+            border: 1px solid var(--border);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .pack-card:hover { 
+            transform: translateY(-5px); 
+            border-color: var(--accent); 
+        }
+        .pack-card h3 { color: var(--accent); font-size: 1.4rem; margin-bottom: 15px; }
+        .price { font-size: 2rem; color: var(--accent-light); font-weight: bold; margin: 15px 0; }
+        .price span { font-size: 1rem; color: var(--text-muted); }
+        .features { list-style: none; margin: 20px 0; }
+        .features li { 
+            padding: 8px 0; 
+            padding-left: 25px; 
+            position: relative; 
+            color: var(--text-muted);
+        }
+        .features li::before { 
+            content: "✓"; 
+            position: absolute; 
+            left: 0; 
+            color: var(--accent); 
+            font-weight: bold;
+        }
+        .cta-btn { 
+            display: block; 
+            width: 100%; 
+            padding: 15px; 
+            background: var(--accent); 
+            color: var(--primary); 
+            text-align: center; 
+            text-decoration: none; 
+            border-radius: 10px; 
+            font-weight: bold;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+        .cta-btn:hover { background: var(--accent-light); }
+
+        /* Contact */
+        .contact { 
+            background: var(--card); 
+            padding: 40px; 
+            border-radius: 15px; 
+            text-align: center; 
+            margin-top: 40px;
+            border: 1px solid var(--border);
+        }
+        .contact h2 { color: var(--accent); margin-bottom: 20px; }
+        .contact-links { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-top: 20px; }
+        .contact-links a { 
+            color: var(--accent); 
+            text-decoration: none; 
+            font-size: 1.1rem;
+            display: flex; 
+            align-items: center; 
+            gap: 8px;
+        }
+        .contact-links a:hover { color: var(--accent-light); }
+
+        /* RTL for Arabic */
+        .rtl { direction: rtl; text-align: right; }
+        .rtl .features li { padding-left: 0; padding-right: 25px; }
+        .rtl .features li::before { left: auto; right: 0; }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8rem; }
+            .packs-grid { grid-template-columns: 1fr; }
+            .contact-links { flex-direction: column; gap: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>🚀 Orchestrator ISA</h1>
+        <p>Digitalización Inteligente para Negocios Locales</p>
+    </header>
+
+    <div class="lang-selector">
+        <button class="lang-btn active" onclick="switchLang('es')">🇪🇸 Español</button>
+        <button class="lang-btn" onclick="switchLang('en')">🇬🇧 English</button>
+        <button class="lang-btn" onclick="switchLang('fr')">🇫🇷 Français</button>
+        <button class="lang-btn" onclick="switchLang('ar')">🇲🇦 العربية</button>
+    </div>
+
+    <main class="content">
+        <!-- ESPAÑOL -->
+        <section id="es" class="lang-section active">
+            <h2 style="text-align:center; color:var(--accent); margin-bottom:30px;">📦 Nuestros Packs</h2>
+            <div class="packs-grid">
+                <div class="pack-card">
+                    <h3>📍 Pack Presencia</h3>
+                    <div class="price">250 MAD <span>+ 150/mes</span></div>
+                    <ul class="features">
+                        <li>Google Maps optimizado</li>
+                        <li>WhatsApp Business básico</li>
+                        <li>Verificación mensual</li>
+                        <li>Entrega: 24-48 horas</li>
+                    </ul>
+                    <a href="https://wa.me/212786120081" class="cta-btn">Solicitar por WhatsApp</a>
+                </div>
+                <div class="pack-card">
+                    <h3>💬 WhatsApp Pro</h3>
+                    <div class="price">400 MAD <span>+ 200/mes</span></div>
+                    <ul class="features">
+                        <li>Catálogo de productos/servicios</li>
+                        <li>Respuestas automáticas 24/7</li>
+                        <li>Ajustes mensuales</li>
+                        <li>Entrega: 48 horas</li>
+                    </ul>
+                    <a href="https://wa.me/212786120081" class="cta-btn">Solicitar por WhatsApp</a>
+                </div>
+                <div class="pack-card">
+                    <h3>🤖 Automatización</h3>
+                    <div class="price">800 MAD <span>+ 350/mes</span></div>
+                    <ul class="features">
+                        <li>Chatbot con IA</li>
+                        <li>Flujos automáticos</li>
+                        <li>Optimización continua</li>
+                        <li>Entrega: 72 horas</li>
+                    </ul>
+                    <a href="https://wa.me/212786120081" class="cta-btn">Solicitar por WhatsApp</a>
+                </div>
+                <div class="pack-card">
+                    <h3>⭐ Pack Completo</h3>
+                    <div class="price">1,200 MAD <span>+ 500/mes</span></div>
+                    <ul class="features">
+                        <li>Todo lo anterior</li>
+                        <li>Contenido mensual</li>
+                        <li>SEO local</li>
+                        <li>Reportes mensuales</li>
+                    </ul>
+                    <a href="https://wa.me/212786120081" class="cta-btn">Solicitar por WhatsApp</a>
+                </div>
+            </div>
+
+            <div class="contact">
+                <h2>¿Listo para digitalizar tu negocio?</h2>
+                <p>Auditoría gratuita de 5 minutos</p>
+                <div class="contact-links">
+                    <a href="https://wa.me/212786120081">📱 +212 786 120 081</a>
+                    <a href="mailto:orchestrator.isa@gmail.com">📧 orchestrator.isa@gmail.com</a>
+                    <a href="https://github.com/AssistantIsa">🌐 GitHub</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ENGLISH -->
+        <section id="en" class="lang-section">
+            <h2 style="text-align:center; color:var(--accent); margin-bottom:30px;">📦 Our Packages</h2>
+            <div class="packs-grid">
+                <div class="pack-card">
+                    <h3>📍 Presence Pack</h3>
+                    <div class="price">250 MAD <span>+ 150/month</span></div>
+                    <ul class="features">
+                        <li>Optimized Google Maps</li>
+                        <li>Basic WhatsApp Business</li>
+                        <li>Monthly verification</li>
+                        <li>Delivery: 24-48 hours</li>
+                    </ul>
+                    <a href="https://wa.me/212786120081" class="cta-btn">Request via WhatsApp</a>
+                </div>
+                <div class="pack-card">
+                    <h3>💬 WhatsApp Pro</h3>
+                    <div class="price">400 MAD <span>+ 200/month</span></div>
+                    <ul class="features">
+                        <li>Product/service catalog</li>
+                        <li>24/7 automatic replies</li>
+                        <li>Monthly adjustments</li>
+                        <li>Delivery: 48 hours</li>
+                    </ul>
+                    <a href="https://wa.me/212786120081" class="cta-btn">Request via WhatsApp</a>
+                </div>
+                <div class="pack-card">
+                    <h3>🤖 Automation</h3>
+                    <div class="price">800 MAD <span>+ 350/month</span></div>
+                    <ul class="features">
+                        <li>AI chatbot</li>
+                        <li>Automatic flows</li>
+                        <li>Continuous optimization</li>
+                        <li>Delivery: 72 hours</li>
+                    </ul>
+                    <a href="https://wa.me/212786120081" class="cta-btn">Request via WhatsApp</a>
+                </div>
+                <div class="pack-card">
+                    <h3>⭐ Complete Pack</h3>
+                    <div class="price">1,200 MAD <span>+ 500/month</span></div>
+                    <ul class="features">
+                        <li>Everything above</li>
+                        <li>Monthly content</li>
+                        <li>Local SEO</li>
+                        <li>Monthly reports</li>
+                    </ul>
+                    <a href="https://wa.me/212786120081" class="cta-btn">Request via WhatsApp</a>
+                </div>
+            </div>
+
+            <div class="contact">
+                <h2>Ready to digitize your business?</h2>
+                <p>Free 5-minute audit</p>
+                <div class="contact-links">
+                    <a href="https://wa.me/212786120081">📱 +212 786 120 081</a>
+                    <a href="mailto:orchestrator.isa@gmail.com">📧 orchestrator.isa@gmail.com</a>
+                    <a href="https://github.com/AssistantIsa">🌐 GitHub</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- FRANÇAIS -->
+        <section id="fr" class="lang-section">
+            <h2 style="text-align:center; color:var(--accent); margin-bottom:30px;">📦 Nos Forfaits</h2>
+            <div class="packs-grid">
+                <div class="pack-card">
+                    <h3>📍 Pack Présence</h3>
+                    <div class="price">250 MAD <span>+ 150/mois</span></div>
+                    <ul class="features">
+                        <li>Google Maps optimisé</li>
+                        <li>WhatsApp Business basique</li>
+                        <li>Vérification mensuelle</li>
+                        <li>Livraison: 24-48 heures</li>
+                    </ul>
+                    <a href="https://wa.me/212786120081" class="cta-btn">Demander via WhatsApp</a>
+                </div>
+                <div class="pack-card">
+                    <h3>💬 WhatsApp Pro</h3>
+                    <div class="price">400 MAD <span>+ 200/mois</span></div>
+                    <ul class="features">
+                        <li>Catalogue produits/services</li>
+                        <li>Réponses automatiques 24/7</li>
+                        <li>Ajustements mensuels</li>
+                        <li>Livraison: 48 heures</li>
+                    </ul>
+                    <a href="https://wa.me/212786120081" class="cta-btn">Demander via WhatsApp</a>
+                </div>
+                <div class="pack-card">
+                    <h3>🤖 Automatisation</h3>
+                    <div class="price">800 MAD <span>+ 350/mois</span></div>
+                    <ul class="features">
+                        <li>Chatbot avec IA</li>
+                        <li>Flux automatiques</li>
+                        <li>Optimisation continue</li>
+                        <li>Livraison: 72 heures</li>
+                    </ul>
+                    <a href="https://wa.me/212786120081" class="cta-btn">Demander via WhatsApp</a>
+                </div>
+                <div class="pack-card">
+                    <h3>⭐ Pack Complet</h3>
+                    <div class="price">1,200 MAD <span>+ 500/mois</span></div>
+                    <ul class="features">
+                        <li>Tout ce qui précède</li>
+                        <li>Contenu mensuel</li>
+                        <li>SEO local</li>
+                        <li>Rapports mensuels</li>
+                    </ul>
+                    <a href="https://wa.me/212786120081" class="cta-btn">Demander via WhatsApp</a>
+                </div>
+            </div>
+
+            <div class="contact">
+                <h2>Prêt à digitaliser votre business?</h2>
+                <p>Audit gratuit de 5 minutes</p>
+                <div class="contact-links">
+                    <a href="https://wa.me/212786120081">📱 +212 786 120 081</a>
+                    <a href="mailto:orchestrator.isa@gmail.com">📧 orchestrator.isa@gmail.com</a>
+                    <a href="https://github.com/AssistantIsa">🌐 GitHub</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ARABIC -->
+        <section id="ar" class="lang-section rtl">
+            <h2 style="text-align:center; color:var(--accent); margin-bottom:30px;">📦 باقاتنا</h2>
+            <div class="packs-grid">
+                <div class="pack-card">
+                    <h3>📍 باقة الحضور</h3>
+                    <div class="price">250 درهم <span>+ 150/شهر</span></div>
+                    <ul class="features">
+                        <li>تحسين Google Maps</li>
+                        <li>WhatsApp Business أساسي</li>
+                        <li>التحقق الشهري</li>
+                        <li>التوصيل: 24-48 ساعة</li>
+                    </ul>
+                    <a href="https://wa.me/212786120081" class="cta-btn">طلب عبر واتساب</a>
+                </div>
+                <div class="pack-card">
+                    <h3>💬 واتساب برو</h3>
+                    <div class="price">400 درهم <span>+ 200/شهر</span></div>
+                    <ul class="features">
+                        <li>كتالوج المنتجات/الخدمات</li>
+                        <li>ردود تلقائية 24/7</li>
+                        <li>تعديلات شهرية</li>
+                        <li>التوصيل: 48 ساعة</li>
+                    </ul>
+                    <a href="https://wa.me/212786120081" class="cta-btn">طلب عبر واتساب</a>
+                </div>
+                <div class="pack-card">
+                    <h3>🤖 الأتمتة</h3>
+                    <div class="price">800 درهم <span>+ 350/شهر</span></div>
+                    <ul class="features">
+                        <li>روبوت محادثة بالذكاء الاصطناعي</li>
+                        <li>تدفقات تلقائية</li>
+                        <li>تحسين مستمر</li>
+                        <li>التوصيل: 72 ساعة</li>
+                    </ul>
+                    <a href="https://wa.me/212786120081" class="cta-btn">طلب عبر واتساب</a>
+                </div>
+                <div class="pack-card">
+                    <h3>⭐ الباقة الكاملة</h3>
+                    <div class="price">1,200 درهم <span>+ 500/شهر</span></div>
+                    <ul class="features">
+                        <li>كل ما سبق</li>
+                        <li>محتوى شهري</li>
+                        <li>تحسين محلي SEO</li>
+                        <li>تقارير شهرية</li>
+                    </ul>
+                    <a href="https://wa.me/212786120081" class="cta-btn">طلب عبر واتساب</a>
+                </div>
+            </div>
+
+            <div class="contact">
+                <h2>جاهز لرقمنة عملك؟</h2>
+                <p>تدقيق مجاني لمدة 5 دقائق</p>
+                <div class="contact-links">
+                    <a href="https://wa.me/212786120081">📱 +212 786 120 081</a>
+                    <a href="mailto:orchestrator.isa@gmail.com">📧 orchestrator.isa@gmail.com</a>
+                    <a href="https://github.com/AssistantIsa">🌐 GitHub</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function switchLang(lang) {
+            document.querySelectorAll('.lang-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(lang).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
